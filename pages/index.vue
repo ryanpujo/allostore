@@ -1,3 +1,3 @@
 <template>
-  <p class="mt-52">hello world</p>
+  <p class="">hello world</p>
 </template>

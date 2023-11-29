@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
+const isLoading = ref(false);
 const dialog = ref(false);
 const username = ref('');
 const email = ref('');
 const password =ref('');
 const auth = useFirebaseAuth();
 const handleSignUp = async () => {
+  isLoading.value = true;
   const cred = await createUserWithEmailAndPassword(auth, email.value, password.value);
   await updateProfile(cred.user, {displayName: username.value});
+  isLoading.value = false;
   dialog.value = false;
 }
 </script>
@@ -28,7 +31,13 @@ const handleSignUp = async () => {
           Sign Up
       </v-btn>
     </template>
-    <VCard>
+    <VCard v-if="isLoading">
+      <VCardText class="d-flex justify-center">
+
+        <VProgressCircular indeterminate color="primary" :size="72"></VProgressCircular>
+      </VCardText>
+    </VCard>
+    <VCard v-else>
       <VCardTitle primary-title>Sign up</VCardTitle>
       <VCardText>
         <vContainer>

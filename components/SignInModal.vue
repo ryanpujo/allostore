@@ -1,33 +1,34 @@
 <script setup lang="ts">
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-
+const isLoading = ref(false);
 const dialog = ref(false);
 const email = ref('');
 const password =ref('');
 const auth = useFirebaseAuth();
 const handleSignIn = async () => {
+  isLoading.value = true;
   const user = await signInWithEmailAndPassword(auth, email.value, password.value);
-  
+  isLoading.value = false;
   dialog.value = false;
 }
 </script>
 
 <template>
-<VRow justify="center">
+<VListItem density="compact" @click="dialog = true" prepend-icon="mdi-account" title="Sign in" subtitle="Account">
+  </VListItem>
+<VRow v-if="dialog" justify="center" dense>
   <VDialog
     v-model="dialog"
     width="480"
     persistent
   >
-    <template v-slot:activator="{ props }">
-      <v-btn
-        variant="text"
-        v-bind="props"
-      >
-          Sign in
-      </v-btn>
-    </template>
-    <VCard>
+    <VCard v-if="isLoading">
+      <VCardText class="d-flex justify-center">
+
+        <VProgressCircular indeterminate color="primary" :size="72"></VProgressCircular>
+      </VCardText>
+    </VCard>
+    <VCard v-else>
       <VCardTitle primary-title>Sign in</VCardTitle>
       <VCardText>
         <vContainer>
@@ -47,6 +48,7 @@ const handleSignIn = async () => {
                 type="password"/>
             </VCol>
           </VRow>
+          <p>sdsd</p>
         </vContainer>
       </VCardText>
       <VCardActions>

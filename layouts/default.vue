@@ -4,8 +4,9 @@
 <template>
   <VApp>
     <AppBar/>
-    <main>
+    <VMain>
       <slot/>
-    </main>
+    </VMain>
+    <BottomNavigation/>
   </VApp>
 </template>
